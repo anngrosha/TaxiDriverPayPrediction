@@ -1,0 +1,3 @@
+COPY weather FROM STDIN WITH CSV HEADER DELIMITER ',' NULL '';
+COPY taxi_zones FROM STDIN WITH CSV HEADER DELIMITER ',' NULL '';
+COPY trips (hvfhs_license_num, dispatching_base_num, originating_base_num, request_datetime, on_scene_datetime, pickup_datetime, dropoff_datetime, pu_location_id, do_location_id, trip_miles, trip_time, base_passenger_fare, tolls, bcf, sales_tax, congestion_surcharge, airport_fee, tips, driver_pay, shared_request_flag, shared_match_flag, wav_request_flag, wav_match_flag, request_date, request_time) FROM STDIN WITH CSV HEADER DELIMITER ',' NULL '';
