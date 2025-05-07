@@ -1,16 +1,47 @@
-This repository is a template for the final project of big data course. It contains the following directories:
+# Uber Driver Pay Prediction - Big Data Pipeline
 
-- `data/` contains the dataset files.
-- `models/` contains the Spark ML models.
-- `notebooks/` has the Jupyter or Zeppelin notebooks of your project and used just for learning purposes.
-- `output/` represents the output directory for storing the results of the project. It can contain `csv` files, text files. images and any other materials you returned as an ouput of the pipeline.
-- `scripts/` is a place for storing `.sh` scripts and `.py` scripts of the pipeline.
-- `sql/` is a folder for keeping all `.sql` and `.hql` files.
+## Project Description
+This project implements an end-to-end big data pipeline to analyze and predict Uber driver payments in New York City using 2021 trip data. The system ingests data from multiple sources, processes it through a distributed computing architecture, and provides both analytical insights and machine learning predictions.
 
-`requirements.txt` lists the Python packages needed for running your Python scripts. Feel free to add more packages when necessary.
+## Dataset
+The project uses three primary datasets from the NYC Taxi and Limousine Commission:
+1. **Trip Records**: 2.4 million Uber trips from January 2021 (Parquet format)
+2. **Taxi Zones**: Geographic boundaries and attributes for 265 NYC zones (CSV)
+3. **Weather Data**: Daily weather records for NYC in 2021 (CSV)
 
-`main.sh` is the main script that will run all scripts of the pipeline stages which will execute the full pipeline and store the results in `output/` folder. During checking your project repo, the grader will run only the main script and check the results in `output/` folder.
+Dataset Source: [Kaggle - Uber NYC Trip Data](https://www.kaggle.com/datasets/shuhengmo/uber-nyc-forhire-vehicles-trip-data-2021)
 
-**Important Note:** You cannot change the content of the script `main.sh` since it will be used for assessment purposes.
+## Pipeline Architecture
+The project follows a four-stage architecture:
 
-**Another Note:** The notebooks in `notebooks/` folder are used only for learning purposes since you need to put all Python scripts of the pipeline in `scripts/` folder. During the assessment, the grader can delete the folder `notebooks/` to check that your pipeline does not depend on its content.
+1. **Data Ingestion**: PostgreSQL → HDFS using Sqoop
+2. **Data Preparation**: HDFS → Hive with partitioning and bucketing
+3. **Data Analysis**: Spark SQL and MLlib for EDA and modeling
+4. **Data Presentation**: Apache Superset dashboard
+
+## Installation & Usage
+
+### Prerequisites
+- Hadoop cluster (tested on CDH 6.3.2)
+- Python 3.8+
+- Java 8
+- Spark 3.1.1
+- Hive 2.1.1
+- PostgreSQL 12
+
+### Setup Instructions
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/anngrosha/UberDriverPayPrediction
+   cd UberDriverPayPrediction
+   ```
+2. Run the pipeline:
+   ```bash
+   ./main.sh
+   ```
+
+## Contributors
+- [Anastasia Pichugina](a.pichugina@innopolis.university) 
+- [Arthur Gubaidullin](a.gubaidullin@innopolis.university)
+- [Israel Adewuyi](i.adewuyi@innopolis.university)
+- [Anna Gromova](an.gromova@innopolis.university)
