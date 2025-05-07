@@ -1,0 +1,133 @@
+{
+  "type" : "record",
+  "name" : "weather",
+  "doc" : "Sqoop import of weather",
+  "fields" : [ {
+    "name" : "station_name",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "station_name",
+    "sqlType" : "12"
+  }, {
+    "name" : "station_address",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "station_address",
+    "sqlType" : "12"
+  }, {
+    "name" : "resolved_address",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "resolved_address",
+    "sqlType" : "12"
+  }, {
+    "name" : "date_id",
+    "type" : [ "null", "long" ],
+    "default" : null,
+    "columnName" : "date_id",
+    "sqlType" : "91"
+  }, {
+    "name" : "temperature",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "temperature",
+    "sqlType" : "8"
+  }, {
+    "name" : "feels_like",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "feels_like",
+    "sqlType" : "8"
+  }, {
+    "name" : "dew_point",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "dew_point",
+    "sqlType" : "8"
+  }, {
+    "name" : "humidity",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "humidity",
+    "sqlType" : "8"
+  }, {
+    "name" : "precipitation",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "precipitation",
+    "sqlType" : "8"
+  }, {
+    "name" : "precipitation_prob",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "precipitation_prob",
+    "sqlType" : "4"
+  }, {
+    "name" : "precipitation_type",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "precipitation_type",
+    "sqlType" : "12"
+  }, {
+    "name" : "snow",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "snow",
+    "sqlType" : "8"
+  }, {
+    "name" : "snow_depth",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "snow_depth",
+    "sqlType" : "8"
+  }, {
+    "name" : "wind_gust",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "wind_gust",
+    "sqlType" : "8"
+  }, {
+    "name" : "wind_speed",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "wind_speed",
+    "sqlType" : "8"
+  }, {
+    "name" : "wind_direction",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "wind_direction",
+    "sqlType" : "8"
+  }, {
+    "name" : "sea_level_pressure",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "sea_level_pressure",
+    "sqlType" : "8"
+  }, {
+    "name" : "cloud_cover",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "cloud_cover",
+    "sqlType" : "8"
+  }, {
+    "name" : "visibility",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "visibility",
+    "sqlType" : "8"
+  }, {
+    "name" : "uv_index",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "uv_index",
+    "sqlType" : "4"
+  }, {
+    "name" : "severe_risk",
+    "type" : [ "null", "double" ],
+    "default" : null,
+    "columnName" : "severe_risk",
+    "sqlType" : "8"
+  } ],
+  "tableName" : "weather"
+}

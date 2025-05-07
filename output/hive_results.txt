@@ -1,0 +1,171 @@
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SHOW DATABASES;
++------------------------+
+|     database_name      |
++------------------------+
+| default                |
+| retake1                |
+| root_db                |
+| show                   |
+| team0_projectdb        |
+| team11_projectdb       |
+| team12_db              |
+| team12_hive_projectdb  |
+| team12_projectdb       |
+| team13_projectdb       |
+| team14_projectdb       |
+| team15_projectdb       |
+| team16_projectdb       |
+| team17_projectdb       |
+| team18_projectdb       |
+| team19_projectdb       |
+| team1_projectdb        |
+| team20_projectdb       |
+| team21_projectdb_v2    |
+| team21_projectdb_v3    |
+| team21_projectdb_v4    |
+| team22_projectdb       |
+| team23_projectdb       |
+| team24_projectdb       |
+| team25_projectdb       |
+| team26_projectdb       |
+| team27_projectdb       |
+| team28_projectdb       |
+| team29_projectdb       |
+| team2_projectdb        |
+| team30_projectdb       |
+| team31_projectdb       |
+| team34_projectdb       |
+| team36_projectdb       |
+| team36db               |
+| team37_projectdb       |
+| team38_projectdb       |
+| team39_projectdb       |
+| team3_projectdb        |
+| team4_projectdb        |
+| team5_projectdb        |
+| team6_projectdb        |
+| team7_projectdb        |
+| team8_projectdb        |
+| team9_projectdb        |
+| teamx_projectdb        |
+| testdb                 |
++------------------------+
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> USE team31_projectdb;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> DROP TABLE IF EXISTS weather;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> DROP TABLE IF EXISTS taxi_zones;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> DROP TABLE IF EXISTS trips;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> DROP TABLE IF EXISTS trips_part;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> CREATE EXTERNAL TABLE weather STORED AS AVRO LOCATION '/user/team31/project/warehouse/weather' TBLPROPERTIES ('avro.schema.url'='/user/team31/project/warehouse/avsc/weather.avsc');
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> select * from weather limit 2;
++-----------------------+--------------------------+------------------------------+------------------+----------------------+---------------------+--------------------+-------------------+------------------------+-----------------------------+-----------------------------+---------------+---------------------+--------------------+---------------------+-------------------------+-----------------------------+----------------------+---------------------+-------------------+----------------------+
+| weather.station_name  | weather.station_address  |   weather.resolved_address   | weather.date_id  | weather.temperature  | weather.feels_like  | weather.dew_point  | weather.humidity  | weather.precipitation  | weather.precipitation_prob  | weather.precipitation_type  | weather.snow  | weather.snow_depth  | weather.wind_gust  | weather.wind_speed  | weather.wind_direction  | weather.sea_level_pressure  | weather.cloud_cover  | weather.visibility  | weather.uv_index  | weather.severe_risk  |
++-----------------------+--------------------------+------------------------------+------------------+----------------------+---------------------+--------------------+-------------------+------------------------+-----------------------------+-----------------------------+---------------+---------------------+--------------------+---------------------+-------------------------+-----------------------------+----------------------+---------------------+-------------------+----------------------+
+| nyc                   | nyc                      | New York, NY, United States  | 1609448400000    | 2.5                  | -0.2                | -3.0               | 67.8              | 15.33                  | 100                         | rain                        | 0.0           | 0.0                 | NULL               | 15.5                | 69.8                    | 1028.9                      | 50.6                 | 14.0                | 3                 | NULL                 |
+| nyc                   | nyc                      | New York, NY, United States  | 1609534800000    | 5.8                  | 3.6                 | 1.2                | 74.0              | 2.38                   | 100                         | rain                        | 1.9           | 0.6                 | 54.6               | 25.5                | 246.9                   | 1012.4                      | 63.9                 | 12.2                | 5                 | NULL                 |
++-----------------------+--------------------------+------------------------------+------------------+----------------------+---------------------+--------------------+-------------------+------------------------+-----------------------------+-----------------------------+---------------+---------------------+--------------------+---------------------+-------------------------+-----------------------------+----------------------+---------------------+-------------------+----------------------+
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> CREATE EXTERNAL TABLE taxi_zones STORED AS AVRO LOCATION '/user/team31/project/warehouse/taxi_zones' TBLPROPERTIES ('avro.schema.url'='/user/team31/project/warehouse/avsc/taxi_zones.avsc');
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> select * from taxi_zones limit 1;
++-------------------------+---------------------+------------------+--------------------------+
+| taxi_zones.location_id  | taxi_zones.borough  | taxi_zones.zone  | taxi_zones.service_zone  |
++-------------------------+---------------------+------------------+--------------------------+
+| 1                       | EWR                 | Newark Airport   | EWR                      |
++-------------------------+---------------------+------------------+--------------------------+
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> CREATE EXTERNAL TABLE trips STORED AS AVRO LOCATION '/user/team31/project/warehouse/trips' TBLPROPERTIES ('avro.schema.url'='/user/team31/project/warehouse/avsc/trips.avsc');
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> select * from trips limit 1;
++----------------+--------------------------+-----------------------------+-----------------------------+-------------------------+--------------------------+------------------------+-------------------------+-----------------------+-----------------------+-------------------+------------------+----------------------------+--------------+------------+------------------+-----------------------------+--------------------+-------------+-------------------+----------------------------+--------------------------+-------------------------+-----------------------+---------------------+---------------------+
+| trips.trip_id  | trips.hvfhs_license_num  | trips.dispatching_base_num  | trips.originating_base_num  | trips.request_datetime  | trips.on_scene_datetime  | trips.pickup_datetime  | trips.dropoff_datetime  | trips.pu_location_id  | trips.do_location_id  | trips.trip_miles  | trips.trip_time  | trips.base_passenger_fare  | trips.tolls  | trips.bcf  | trips.sales_tax  | trips.congestion_surcharge  | trips.airport_fee  | trips.tips  | trips.driver_pay  | trips.shared_request_flag  | trips.shared_match_flag  | trips.wav_request_flag  | trips.wav_match_flag  | trips.request_date  | trips.request_time  |
++----------------+--------------------------+-----------------------------+-----------------------------+-------------------------+--------------------------+------------------------+-------------------------+-----------------------+-----------------------+-------------------+------------------+----------------------------+--------------+------------+------------------+-----------------------------+--------------------+-------------+-------------------+----------------------------+--------------------------+-------------------------+-----------------------+---------------------+---------------------+
+| 1              | HV0003                   | B02682                      | B02682                      | 1609450089000           | 1609450302000            | 1609450424000          | 1609451347000           | 230                   | 166                   | 5.26              | 923              | 22.28                      | 0.0          | 0.67       | 1.98             | 2.75                        | NULL               | 0.0         | 14.99             | 0                          | 0                        | 0                       | 0                     | 1609448400000       | -9111000            |
++----------------+--------------------------+-----------------------------+-----------------------------+-------------------------+--------------------------+------------------------+-------------------------+-----------------------+-----------------------+-------------------+------------------+----------------------------+--------------+------------+------------------+-----------------------------+--------------------+-------------+-------------------+----------------------------+--------------------------+-------------------------+-----------------------+---------------------+---------------------+
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> CREATE EXTERNAL TABLE trips_part(
+. . . . . . . . . . . . . . . . . . . . . . .>     trip_id bigint,
+. . . . . . . . . . . . . . . . . . . . . . .>     hvfhs_license_num string,
+. . . . . . . . . . . . . . . . . . . . . . .>     originating_base_num string,
+. . . . . . . . . . . . . . . . . . . . . . .>     request_datetime bigint,
+. . . . . . . . . . . . . . . . . . . . . . .>     on_scene_datetime bigint,
+. . . . . . . . . . . . . . . . . . . . . . .>     pickup_datetime bigint,
+. . . . . . . . . . . . . . . . . . . . . . .>     dropoff_datetime bigint,
+. . . . . . . . . . . . . . . . . . . . . . .>     pu_location_id int,
+. . . . . . . . . . . . . . . . . . . . . . .>     do_location_id int,
+. . . . . . . . . . . . . . . . . . . . . . .>     trip_miles float,
+. . . . . . . . . . . . . . . . . . . . . . .>     trip_time int,
+. . . . . . . . . . . . . . . . . . . . . . .>     base_passenger_fare float,
+. . . . . . . . . . . . . . . . . . . . . . .>     tolls float,
+. . . . . . . . . . . . . . . . . . . . . . .>     bcf float,
+. . . . . . . . . . . . . . . . . . . . . . .>     sales_tax float,
+. . . . . . . . . . . . . . . . . . . . . . .>     congestion_surcharge float,
+. . . . . . . . . . . . . . . . . . . . . . .>     airport_fee float,
+. . . . . . . . . . . . . . . . . . . . . . .>     tips float,
+. . . . . . . . . . . . . . . . . . . . . . .>     driver_pay float,
+. . . . . . . . . . . . . . . . . . . . . . .>     shared_request_flag int,
+. . . . . . . . . . . . . . . . . . . . . . .>     shared_match_flag int,
+. . . . . . . . . . . . . . . . . . . . . . .>     wav_request_flag int,
+. . . . . . . . . . . . . . . . . . . . . . .>     wav_match_flag int,
+. . . . . . . . . . . . . . . . . . . . . . .>     request_date bigint,
+. . . . . . . . . . . . . . . . . . . . . . .>     request_time bigint
+. . . . . . . . . . . . . . . . . . . . . . .> ) 
+. . . . . . . . . . . . . . . . . . . . . . .> PARTITIONED BY (dispatching_base_num STRING) CLUSTERED BY (pu_location_id, do_location_id) INTO 8 BUCKETS STORED AS AVRO LOCATION 'project/hive/warehouse/trips_part' TBLPROPERTIES ('AVRO.COMPRESS'='SNAPPY');
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SET hive.exec.dynamic.partition=true;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SET hive.exec.dynamic.partition.mode=nonstrict;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> INSERT OVERWRITE TABLE trips_part PARTITION(dispatching_base_num) 
+. . . . . . . . . . . . . . . . . . . . . . .> SELECT trip_id, hvfhs_license_num, originating_base_num, request_datetime, on_scene_datetime, pickup_datetime,
+. . . . . . . . . . . . . . . . . . . . . . .>     dropoff_datetime, pu_location_id, do_location_id, trip_miles, trip_time, base_passenger_fare, tolls,
+. . . . . . . . . . . . . . . . . . . . . . .>     bcf, sales_tax, congestion_surcharge, airport_fee, tips, driver_pay, shared_request_flag, shared_match_flag,
+. . . . . . . . . . . . . . . . . . . . . . .>     wav_request_flag, wav_match_flag, request_date, request_time, dispatching_base_num  
+. . . . . . . . . . . . . . . . . . . . . . .> FROM trips;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SELECT * FROM trips_part LIMIT 2;
++---------------------+-------------------------------+----------------------------------+------------------------------+-------------------------------+-----------------------------+------------------------------+----------------------------+----------------------------+------------------------+-----------------------+---------------------------------+-------------------+-----------------+-----------------------+----------------------------------+-------------------------+------------------+------------------------+---------------------------------+-------------------------------+------------------------------+----------------------------+--------------------------+--------------------------+----------------------------------+
+| trips_part.trip_id  | trips_part.hvfhs_license_num  | trips_part.originating_base_num  | trips_part.request_datetime  | trips_part.on_scene_datetime  | trips_part.pickup_datetime  | trips_part.dropoff_datetime  | trips_part.pu_location_id  | trips_part.do_location_id  | trips_part.trip_miles  | trips_part.trip_time  | trips_part.base_passenger_fare  | trips_part.tolls  | trips_part.bcf  | trips_part.sales_tax  | trips_part.congestion_surcharge  | trips_part.airport_fee  | trips_part.tips  | trips_part.driver_pay  | trips_part.shared_request_flag  | trips_part.shared_match_flag  | trips_part.wav_request_flag  | trips_part.wav_match_flag  | trips_part.request_date  | trips_part.request_time  | trips_part.dispatching_base_num  |
++---------------------+-------------------------------+----------------------------------+------------------------------+-------------------------------+-----------------------------+------------------------------+----------------------------+----------------------------+------------------------+-----------------------+---------------------------------+-------------------+-----------------+-----------------------+----------------------------------+-------------------------+------------------+------------------------+---------------------------------+-------------------------------+------------------------------+----------------------------+--------------------------+--------------------------+----------------------------------+
+| 2456476             | HV0003                        | B02395                           | 1610075140000                | 1610075227000                 | 1610075347000               | 1610076493000                | 244                        | 126                        | 6.67                   | 1146                  | 24.64                           | 0.0               | 0.0             | 0.0                   | 0.0                              | NULL                    | 0.0              | 16.94                  | 0                               | 0                             | 0                            | 0                          | 1610053200000            | 11140000                 | B02395                           |
+| 2455718             | HV0003                        | B02395                           | 1610076425000                | 1610076736000                 | 1610076761000               | 1610077278000                | 122                        | 130                        | 2.24                   | 517                   | 7.41                            | 0.0               | 0.0             | 0.0                   | 0.0                              | NULL                    | 0.0              | 6.8                    | 0                               | 0                             | 0                            | 0                          | 1610053200000            | 12425000                 | B02395                           |
++---------------------+-------------------------------+----------------------------------+------------------------------+-------------------------------+-----------------------------+------------------------------+----------------------------+----------------------------+------------------------+-----------------------+---------------------------------+-------------------+-----------------+-----------------------+----------------------------------+-------------------------+------------------+------------------------+---------------------------------+-------------------------------+------------------------------+----------------------------+--------------------------+--------------------------+----------------------------------+
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SHOW PARTITIONS trips_part;
++------------------------------+
+|          partition           |
++------------------------------+
+| dispatching_base_num=B02395  |
+| dispatching_base_num=B02510  |
+| dispatching_base_num=B02512  |
+| dispatching_base_num=B02617  |
+| dispatching_base_num=B02682  |
+| dispatching_base_num=B02764  |
+| dispatching_base_num=B02765  |
+| dispatching_base_num=B02800  |
+| dispatching_base_num=B02835  |
+| dispatching_base_num=B02836  |
+| dispatching_base_num=B02844  |
+| dispatching_base_num=B02864  |
+| dispatching_base_num=B02865  |
+| dispatching_base_num=B02866  |
+| dispatching_base_num=B02867  |
+| dispatching_base_num=B02869  |
+| dispatching_base_num=B02870  |
+| dispatching_base_num=B02871  |
+| dispatching_base_num=B02872  |
+| dispatching_base_num=B02875  |
+| dispatching_base_num=B02876  |
+| dispatching_base_num=B02877  |
+| dispatching_base_num=B02878  |
+| dispatching_base_num=B02879  |
+| dispatching_base_num=B02880  |
+| dispatching_base_num=B02882  |
+| dispatching_base_num=B02883  |
+| dispatching_base_num=B02884  |
+| dispatching_base_num=B02887  |
+| dispatching_base_num=B02888  |
+| dispatching_base_num=B02889  |
+| dispatching_base_num=B03136  |
++------------------------------+
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> !q

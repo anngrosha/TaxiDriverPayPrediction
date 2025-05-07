@@ -1,0 +1,6 @@
+temp_range,precipitation_status,trip_count,avg_trip_minutes,avg_trip_miles,avg_trip_price beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team31 -p vYAAmbNH5Yyb58vN -f sql/q5.hql
+Cold (< 5°),Dry,1096823,16.104519,4.490236,18.664244
+Cold (< 5°),High Precipitation,299870,14.958952,4.8868804,19.063822
+Cold (< 5°),Small Precipitation,320221,15.949067,4.688636,18.838902
+Cold (< 5°),Very High Precipitation,407519,14.6364565,4.7834287,21.923725
+Warm (> 5°),Average Precipitation,332235,15.847637,4.793467,18.164595
