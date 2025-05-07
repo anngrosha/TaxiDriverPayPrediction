@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# BEFORE RUNNING SCRIPTS: MAKE THEM EXECUTABLE
-# chmod +x scripts/data_collection.sh
-# ...
-
 # Pre-processing
 echo "Running pre-processing"
 bash scripts/preprocess.sh
