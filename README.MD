@@ -1,11 +1,11 @@
-# Uber Driver Pay Prediction - Big Data Pipeline
+# Taxi Driver Pay Prediction - Big Data Pipeline
 
 ## Project Description
 This project implements an end-to-end big data pipeline to analyze and predict Uber driver payments in New York City using 2021 trip data. The system ingests data from multiple sources, processes it through a distributed computing architecture, and provides both analytical insights and machine learning predictions.
 
 ## Dataset
 The project uses three primary datasets from the NYC Taxi and Limousine Commission:
-1. **Trip Records**: 2.4 million Uber trips from January 2021 (Parquet format)
+1. **Trip Records**: 2.4 million taxi trips from January 2021 (Parquet format)
 2. **Taxi Zones**: Geographic boundaries and attributes for 265 NYC zones (CSV)
 3. **Weather Data**: Daily weather records for NYC in 2021 (CSV)
 
@@ -32,8 +32,13 @@ The project follows a four-stage architecture:
 ### Setup Instructions
 1. Clone the repository:
    ```bash
-   git clone https://github.com/anngrosha/UberDriverPayPrediction
-   cd UberDriverPayPrediction
+   git clone https://github.com/anngrosha/TaxiDriverPayPrediction
+   cd TaxiDriverPayPrediction
+   ```
+3. Run this code before the main pipeline to make the scripts executable
+   ```bash
+   chmod +x main.sh
+   chmod +x scripts/*.sh
    ```
 2. Run the pipeline:
    ```bash
