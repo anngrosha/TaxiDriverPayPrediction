@@ -1,6 +1,5 @@
-import psycopg2 as psql
-from pprint import pprint
 import os
+import psycopg2 as psql
 
 file = os.path.join("secrets", ".psql.pass")
 with open(file, "r") as file:
@@ -28,7 +27,7 @@ with psql.connect(conn_string) as conn:
                 cur.copy_expert(commands[2], trips)
 
     conn.commit()
-    
+
     # Testing:
     # pprint(conn)
     # cur = conn.cursor()

@@ -1,16 +1,14 @@
 # Import necessary dependencies
+import os
 from pyspark.sql import SparkSession
-from pyspark.sql import functions as F
 from pyspark.ml import Pipeline
-from pyspark.sql import DataFrame
-from pyspark.ml.linalg import Vectors, VectorUDT
-from pyspark.sql.functions import udf
 from pyspark.ml.regression import LinearRegression, GBTRegressor
 from pyspark.ml.tuning import ParamGridBuilder, CrossValidator
 from pyspark.ml.evaluation import RegressionEvaluator
 from pyspark.ml.feature import StandardScaler
-import os
-
+from pyspark.sql import functions as F
+from pyspark.sql import Row
+import numpy as np
 
 # Helper function for running the commands
 def run(command):
@@ -36,6 +34,11 @@ spark = SparkSession.builder\
 # Ensure that we are connected by listing all the tables
 spark.sql("USE team31_projectdb").show()
 spark.sql("SHOW TABLES").show()
+spark.sql("DROP TABLE IF EXISTS model1_predictions;")
+spark.sql("DROP TABLE IF EXISTS model2_predictions;")
+spark.sql("DROP TABLE IF EXISTS model1_feature_importance;")
+spark.sql("DROP TABLE IF EXISTS model2_feature_importance;")
+
 
 # Load files via HDFS
 train_hdfs_path = "/user/team31/project/data/train"
@@ -186,7 +189,8 @@ predictions_lr.select("driver_pay", "driver_pay_pred")\
     .save("/user/team31/project/output/model1_predictions.csv")
 
 # Run it from root directory of the repository
-run("hdfs dfs -cat /user/team31/project/output/model1_predictions.csv/*.csv > output/model1_predictions.csv")
+run("hdfs dfs -cat /user/team31/project/output/model1_predictions.csv/*.csv " \
+    "> output/model1_predictions.csv")
 
 # Do the same for GBT
 predictions_gbt = best_gbt_model.transform(test_df)
@@ -202,7 +206,8 @@ predictions_gbt.select("driver_pay", "driver_pay_pred")\
     .save("/user/team31/project/output/model2_predictions.csv")
 
 # Run it from root directory of the repository
-run("hdfs dfs -cat /user/team31/project/output/model2_predictions.csv/*.csv > output/model2_predictions.csv")
+run("hdfs dfs -cat /user/team31/project/output/model2_predictions.csv/*.csv " \
+    "> output/model2_predictions.csv")
 
 print("Predictions are generated.")
 
@@ -213,29 +218,29 @@ predictions_gbt.createOrReplaceTempView("gbt_predictions")
 # Now execute the SQL query
 spark.sql("""
     WITH metrics AS (
-        SELECT 
+        SELECT
             'LinearRegression' as model,
             SQRT(AVG(POW(driver_pay - driver_pay_pred, 2))) as rmse,
             AVG(ABS(driver_pay - driver_pay_pred)) as mae,
             1 - SUM(POW(driver_pay - driver_pay_pred, 2))/NULLIF(SUM(POW(driver_pay - avg_pay, 2)), 0) as r2
         FROM (
             SELECT 
-                driver_pay, 
+                driver_pay,
                 driver_pay_pred,
                 AVG(driver_pay) OVER () as avg_pay
             FROM lr_predictions
         )
-        
+
         UNION ALL
-        
-        SELECT 
+
+        SELECT
             'GBTRegression' as model,
             SQRT(AVG(POW(driver_pay - driver_pay_pred, 2))) as rmse,
             AVG(ABS(driver_pay - driver_pay_pred)) as mae,
             1 - SUM(POW(driver_pay - driver_pay_pred, 2))/NULLIF(SUM(POW(driver_pay - avg_pay, 2)), 0) as r2
         FROM (
-            SELECT 
-                driver_pay, 
+            SELECT
+                driver_pay,
                 driver_pay_pred,
                 AVG(driver_pay) OVER () as avg_pay
             FROM gbt_predictions
@@ -251,4 +256,141 @@ spark.sql("""
     .save("/user/team31/project/output/evaluation.csv")
 
 # Run it from root directory of the repository
-run("hdfs dfs -cat /user/team31/project/output/evaluation.csv/*.csv > output/evaluation.csv")
+run("hdfs dfs -cat /user/team31/project/output/evaluation.csv/*.csv " \
+    "> output/evaluation.csv")
+
+# Now save results to Hive tables: predictions and feature importance
+print("Saving to Hive")
+lr_predictions = spark.read.csv(
+    "/user/team31/project/output/model1_predictions.csv",
+    header=True,
+)
+lr_predictions = lr_predictions.withColumn(
+    "id",
+    F.monotonically_increasing_id()
+)
+
+lr_predictions.write.mode("overwrite") \
+    .saveAsTable("team31_projectdb.model1_predictions")
+
+gbt_predictions = spark.read.csv(
+    "/user/team31/project/output/model2_predictions.csv",
+    header=True,
+)
+gbt_predictions = gbt_predictions.withColumn(
+    "id",
+    F.monotonically_increasing_id()
+)
+
+gbt_predictions.write.mode("overwrite") \
+    .saveAsTable("team31_projectdb.model2_predictions")
+
+
+# Define feature name
+features = [
+    'trip_miles',
+    'trip_time',
+    'base_passenger_fare',
+    'tolls',
+    'bcf',
+    'sales_tax',
+    'congestion_surcharge',
+    'tips',
+    'shared_request_flag',
+    'shared_match_flag',
+    'wav_request_flag',
+    'wav_match_flag',
+    'temperature',
+    'feels_like',
+    'dew_point',
+    'humidity',
+    'precipitation',
+    'precipitation_prob',
+    'snow',
+    'snow_depth',
+    'wind_speed',
+    'wind_direction',
+    'sea_level_pressure',
+    'cloud_cover',
+    'visibility',
+    'uv_index',
+    'borough_encoded_pu',
+    'borough_encoded_pu_Manhattan',
+    'borough_encoded_pu_Queens',
+    'borough_encoded_pu_Brooklyn',
+    'borough_encoded_pu_Bronx',
+    'borough_encoded_pu_Staten Island',
+    'borough_encoded_pu_Unknown',
+    'borough_encoded_pu_EWR',
+    'service_zone_encoded_pu',
+    'service_zone_encoded_pu_Boro Zone',
+    'service_zone_encoded_pu_Yellow Zone',
+    'service_zone_encoded_pu_Airports',
+    'service_zone_encoded_pu_N/A',
+    'service_zone_encoded_pu_EWR',
+    'borough_encoded_do',
+    'borough_encoded_do_Manhattan',
+    'borough_encoded_do_Queens',
+    'borough_encoded_do_Brooklyn',
+    'borough_encoded_do_Bronx',
+    'borough_encoded_do_Staten Island',
+    'borough_encoded_do_Unknown',
+    'borough_encoded_do_EWR',
+    'service_zone_encoded_do',
+    'service_zone_encoded_do_Boro Zone',
+    'service_zone_encoded_do_Yellow Zone',
+    'service_zone_encoded_do_Airports',
+    'service_zone_encoded_do_N/A',
+    'service_zone_encoded_do_EWR',
+    'day_sine',
+    'day_cosine',
+    'month_sine',
+    'month_cosine',
+    'hvfhs_license_num_encoded',
+    'hvfhs_license_num_encoded_HV0003',
+    'hvfhs_license_num_encoded_HV0005',
+    'hvfhs_license_num_encoded_HV0004',
+]
+coefficients_lr = best_lr_model.coefficients.toArray()
+
+coefficients_lr_rows = [
+    Row(
+        Feature=feature,
+        Coefficient=float(coefficient)
+    ) for feature, coefficient in zip(features, coefficients_lr)
+]
+
+lr_importance_df = spark.createDataFrame(coefficients_lr_rows)
+lr_importance_df = lr_importance_df.withColumn(
+    "Absolute_Coefficient",
+    F.abs(lr_importance_df["Coefficient"])) \
+                             .sort("Absolute_Coefficient", ascending=False)
+lr_importance_df \
+    .write.mode("overwrite") \
+    .saveAsTable("team31_projectdb.model1_feature_importance")
+
+print("Feature importance of the first model was saved.")
+
+gbt_importance = best_gbt_model.featureImportances
+dense_importance = np.zeros(gbt_importance.size)
+
+for i in range(len(gbt_importance.indices)):
+    idx = gbt_importance.indices[i]
+    val = gbt_importance.values[i]
+    dense_importance[idx] = val
+dense_importance = gbt_importance.toArray()
+
+coefficients_gbt_rows = [
+    Row(
+        Feature=feature,
+        Importance=float(importance)
+    ) for feature, importance in zip(features, dense_importance)
+]
+
+gbt_importance_df = spark.createDataFrame(coefficients_gbt_rows)
+gbt_importance_df = gbt_importance_df.sort(F.col("Importance").desc())
+gbt_importance_df \
+    .write.mode("overwrite") \
+    .saveAsTable("team31_projectdb.model2_feature_importance")
+
+print("Feature importance of the first model was saved.")

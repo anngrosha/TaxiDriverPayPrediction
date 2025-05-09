@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# BEFORE RUNNING SCRIPTS: MAKE THEM EXECUTABLE
-# chmod +x scripts/data_collection.sh
-# ...
-
 # Pre-processing
 echo "Running pre-processing"
 bash scripts/preprocess.sh
@@ -19,11 +15,11 @@ echo "Running Stage 3 of the pipeline - Spark ML"
 bash scripts/stage3.sh
 
 echo "Running Stage 4 of the pipeline - Streamlit"
-bash scripts/stage4.sh
+#bash scripts/stage4.sh
 
 # Post-processing 
 echo "Running post-processing!"
-bash scripts/postprocess.sh
+#bash scripts/postprocess.sh
 
 
 # Check the quality of the codes

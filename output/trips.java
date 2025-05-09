@@ -2,7 +2,7 @@
 // WARNING: This class is AUTO-GENERATED. Modify at your own risk.
 //
 // Debug information:
-// Generated date: Mon May 05 23:49:28 MSK 2025
+// Generated date: Fri May 09 01:01:08 MSK 2025
 // For connector: org.apache.sqoop.manager.PostgresqlManager
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.Text;
@@ -163,25 +163,25 @@ public class trips extends SqoopRecord  implements DBWritable, Writable {
     setters.put("shared_request_flag", new FieldSetterCommand() {
       @Override
       public void setField(Object value) {
-        trips.this.shared_request_flag = (Integer)value;
+        trips.this.shared_request_flag = (String)value;
       }
     });
     setters.put("shared_match_flag", new FieldSetterCommand() {
       @Override
       public void setField(Object value) {
-        trips.this.shared_match_flag = (Integer)value;
+        trips.this.shared_match_flag = (String)value;
       }
     });
     setters.put("wav_request_flag", new FieldSetterCommand() {
       @Override
       public void setField(Object value) {
-        trips.this.wav_request_flag = (Integer)value;
+        trips.this.wav_request_flag = (String)value;
       }
     });
     setters.put("wav_match_flag", new FieldSetterCommand() {
       @Override
       public void setField(Object value) {
-        trips.this.wav_match_flag = (Integer)value;
+        trips.this.wav_match_flag = (String)value;
       }
     });
     setters.put("request_date", new FieldSetterCommand() {
@@ -420,47 +420,47 @@ public class trips extends SqoopRecord  implements DBWritable, Writable {
     this.driver_pay = driver_pay;
     return this;
   }
-  private Integer shared_request_flag;
-  public Integer get_shared_request_flag() {
+  private String shared_request_flag;
+  public String get_shared_request_flag() {
     return shared_request_flag;
   }
-  public void set_shared_request_flag(Integer shared_request_flag) {
+  public void set_shared_request_flag(String shared_request_flag) {
     this.shared_request_flag = shared_request_flag;
   }
-  public trips with_shared_request_flag(Integer shared_request_flag) {
+  public trips with_shared_request_flag(String shared_request_flag) {
     this.shared_request_flag = shared_request_flag;
     return this;
   }
-  private Integer shared_match_flag;
-  public Integer get_shared_match_flag() {
+  private String shared_match_flag;
+  public String get_shared_match_flag() {
     return shared_match_flag;
   }
-  public void set_shared_match_flag(Integer shared_match_flag) {
+  public void set_shared_match_flag(String shared_match_flag) {
     this.shared_match_flag = shared_match_flag;
   }
-  public trips with_shared_match_flag(Integer shared_match_flag) {
+  public trips with_shared_match_flag(String shared_match_flag) {
     this.shared_match_flag = shared_match_flag;
     return this;
   }
-  private Integer wav_request_flag;
-  public Integer get_wav_request_flag() {
+  private String wav_request_flag;
+  public String get_wav_request_flag() {
     return wav_request_flag;
   }
-  public void set_wav_request_flag(Integer wav_request_flag) {
+  public void set_wav_request_flag(String wav_request_flag) {
     this.wav_request_flag = wav_request_flag;
   }
-  public trips with_wav_request_flag(Integer wav_request_flag) {
+  public trips with_wav_request_flag(String wav_request_flag) {
     this.wav_request_flag = wav_request_flag;
     return this;
   }
-  private Integer wav_match_flag;
-  public Integer get_wav_match_flag() {
+  private String wav_match_flag;
+  public String get_wav_match_flag() {
     return wav_match_flag;
   }
-  public void set_wav_match_flag(Integer wav_match_flag) {
+  public void set_wav_match_flag(String wav_match_flag) {
     this.wav_match_flag = wav_match_flag;
   }
-  public trips with_wav_match_flag(Integer wav_match_flag) {
+  public trips with_wav_match_flag(String wav_match_flag) {
     this.wav_match_flag = wav_match_flag;
     return this;
   }
@@ -582,10 +582,10 @@ public class trips extends SqoopRecord  implements DBWritable, Writable {
     this.airport_fee = JdbcWritableBridge.readDouble(18, __dbResults);
     this.tips = JdbcWritableBridge.readDouble(19, __dbResults);
     this.driver_pay = JdbcWritableBridge.readDouble(20, __dbResults);
-    this.shared_request_flag = JdbcWritableBridge.readInteger(21, __dbResults);
-    this.shared_match_flag = JdbcWritableBridge.readInteger(22, __dbResults);
-    this.wav_request_flag = JdbcWritableBridge.readInteger(23, __dbResults);
-    this.wav_match_flag = JdbcWritableBridge.readInteger(24, __dbResults);
+    this.shared_request_flag = JdbcWritableBridge.readString(21, __dbResults);
+    this.shared_match_flag = JdbcWritableBridge.readString(22, __dbResults);
+    this.wav_request_flag = JdbcWritableBridge.readString(23, __dbResults);
+    this.wav_match_flag = JdbcWritableBridge.readString(24, __dbResults);
     this.request_date = JdbcWritableBridge.readDate(25, __dbResults);
     this.request_time = JdbcWritableBridge.readTime(26, __dbResults);
   }
@@ -610,10 +610,10 @@ public class trips extends SqoopRecord  implements DBWritable, Writable {
     this.airport_fee = JdbcWritableBridge.readDouble(18, __dbResults);
     this.tips = JdbcWritableBridge.readDouble(19, __dbResults);
     this.driver_pay = JdbcWritableBridge.readDouble(20, __dbResults);
-    this.shared_request_flag = JdbcWritableBridge.readInteger(21, __dbResults);
-    this.shared_match_flag = JdbcWritableBridge.readInteger(22, __dbResults);
-    this.wav_request_flag = JdbcWritableBridge.readInteger(23, __dbResults);
-    this.wav_match_flag = JdbcWritableBridge.readInteger(24, __dbResults);
+    this.shared_request_flag = JdbcWritableBridge.readString(21, __dbResults);
+    this.shared_match_flag = JdbcWritableBridge.readString(22, __dbResults);
+    this.wav_request_flag = JdbcWritableBridge.readString(23, __dbResults);
+    this.wav_match_flag = JdbcWritableBridge.readString(24, __dbResults);
     this.request_date = JdbcWritableBridge.readDate(25, __dbResults);
     this.request_time = JdbcWritableBridge.readTime(26, __dbResults);
   }
@@ -648,10 +648,10 @@ public class trips extends SqoopRecord  implements DBWritable, Writable {
     JdbcWritableBridge.writeDouble(airport_fee, 18 + __off, 8, __dbStmt);
     JdbcWritableBridge.writeDouble(tips, 19 + __off, 8, __dbStmt);
     JdbcWritableBridge.writeDouble(driver_pay, 20 + __off, 8, __dbStmt);
-    JdbcWritableBridge.writeInteger(shared_request_flag, 21 + __off, 4, __dbStmt);
-    JdbcWritableBridge.writeInteger(shared_match_flag, 22 + __off, 4, __dbStmt);
-    JdbcWritableBridge.writeInteger(wav_request_flag, 23 + __off, 4, __dbStmt);
-    JdbcWritableBridge.writeInteger(wav_match_flag, 24 + __off, 4, __dbStmt);
+    JdbcWritableBridge.writeString(shared_request_flag, 21 + __off, 1, __dbStmt);
+    JdbcWritableBridge.writeString(shared_match_flag, 22 + __off, 1, __dbStmt);
+    JdbcWritableBridge.writeString(wav_request_flag, 23 + __off, 1, __dbStmt);
+    JdbcWritableBridge.writeString(wav_match_flag, 24 + __off, 1, __dbStmt);
     JdbcWritableBridge.writeDate(request_date, 25 + __off, 91, __dbStmt);
     JdbcWritableBridge.writeTime(request_time, 26 + __off, 92, __dbStmt);
     return 26;
@@ -677,10 +677,10 @@ public class trips extends SqoopRecord  implements DBWritable, Writable {
     JdbcWritableBridge.writeDouble(airport_fee, 18 + __off, 8, __dbStmt);
     JdbcWritableBridge.writeDouble(tips, 19 + __off, 8, __dbStmt);
     JdbcWritableBridge.writeDouble(driver_pay, 20 + __off, 8, __dbStmt);
-    JdbcWritableBridge.writeInteger(shared_request_flag, 21 + __off, 4, __dbStmt);
-    JdbcWritableBridge.writeInteger(shared_match_flag, 22 + __off, 4, __dbStmt);
-    JdbcWritableBridge.writeInteger(wav_request_flag, 23 + __off, 4, __dbStmt);
-    JdbcWritableBridge.writeInteger(wav_match_flag, 24 + __off, 4, __dbStmt);
+    JdbcWritableBridge.writeString(shared_request_flag, 21 + __off, 1, __dbStmt);
+    JdbcWritableBridge.writeString(shared_match_flag, 22 + __off, 1, __dbStmt);
+    JdbcWritableBridge.writeString(wav_request_flag, 23 + __off, 1, __dbStmt);
+    JdbcWritableBridge.writeString(wav_match_flag, 24 + __off, 1, __dbStmt);
     JdbcWritableBridge.writeDate(request_date, 25 + __off, 91, __dbStmt);
     JdbcWritableBridge.writeTime(request_time, 26 + __off, 92, __dbStmt);
   }
@@ -794,22 +794,22 @@ this.readFields0(__dataIn);  }
     if (__dataIn.readBoolean()) { 
         this.shared_request_flag = null;
     } else {
-    this.shared_request_flag = Integer.valueOf(__dataIn.readInt());
+    this.shared_request_flag = Text.readString(__dataIn);
     }
     if (__dataIn.readBoolean()) { 
         this.shared_match_flag = null;
     } else {
-    this.shared_match_flag = Integer.valueOf(__dataIn.readInt());
+    this.shared_match_flag = Text.readString(__dataIn);
     }
     if (__dataIn.readBoolean()) { 
         this.wav_request_flag = null;
     } else {
-    this.wav_request_flag = Integer.valueOf(__dataIn.readInt());
+    this.wav_request_flag = Text.readString(__dataIn);
     }
     if (__dataIn.readBoolean()) { 
         this.wav_match_flag = null;
     } else {
-    this.wav_match_flag = Integer.valueOf(__dataIn.readInt());
+    this.wav_match_flag = Text.readString(__dataIn);
     }
     if (__dataIn.readBoolean()) { 
         this.request_date = null;
@@ -951,25 +951,25 @@ this.readFields0(__dataIn);  }
         __dataOut.writeBoolean(true);
     } else {
         __dataOut.writeBoolean(false);
-    __dataOut.writeInt(this.shared_request_flag);
+    Text.writeString(__dataOut, shared_request_flag);
     }
     if (null == this.shared_match_flag) { 
         __dataOut.writeBoolean(true);
     } else {
         __dataOut.writeBoolean(false);
-    __dataOut.writeInt(this.shared_match_flag);
+    Text.writeString(__dataOut, shared_match_flag);
     }
     if (null == this.wav_request_flag) { 
         __dataOut.writeBoolean(true);
     } else {
         __dataOut.writeBoolean(false);
-    __dataOut.writeInt(this.wav_request_flag);
+    Text.writeString(__dataOut, wav_request_flag);
     }
     if (null == this.wav_match_flag) { 
         __dataOut.writeBoolean(true);
     } else {
         __dataOut.writeBoolean(false);
-    __dataOut.writeInt(this.wav_match_flag);
+    Text.writeString(__dataOut, wav_match_flag);
     }
     if (null == this.request_date) { 
         __dataOut.writeBoolean(true);
@@ -1113,25 +1113,25 @@ this.readFields0(__dataIn);  }
         __dataOut.writeBoolean(true);
     } else {
         __dataOut.writeBoolean(false);
-    __dataOut.writeInt(this.shared_request_flag);
+    Text.writeString(__dataOut, shared_request_flag);
     }
     if (null == this.shared_match_flag) { 
         __dataOut.writeBoolean(true);
     } else {
         __dataOut.writeBoolean(false);
-    __dataOut.writeInt(this.shared_match_flag);
+    Text.writeString(__dataOut, shared_match_flag);
     }
     if (null == this.wav_request_flag) { 
         __dataOut.writeBoolean(true);
     } else {
         __dataOut.writeBoolean(false);
-    __dataOut.writeInt(this.wav_request_flag);
+    Text.writeString(__dataOut, wav_request_flag);
     }
     if (null == this.wav_match_flag) { 
         __dataOut.writeBoolean(true);
     } else {
         __dataOut.writeBoolean(false);
-    __dataOut.writeInt(this.wav_match_flag);
+    Text.writeString(__dataOut, wav_match_flag);
     }
     if (null == this.request_date) { 
         __dataOut.writeBoolean(true);
@@ -1199,13 +1199,13 @@ this.readFields0(__dataIn);  }
     __sb.append(fieldDelim);
     __sb.append(FieldFormatter.escapeAndEnclose(driver_pay==null?"null":"" + driver_pay, delimiters));
     __sb.append(fieldDelim);
-    __sb.append(FieldFormatter.escapeAndEnclose(shared_request_flag==null?"null":"" + shared_request_flag, delimiters));
+    __sb.append(FieldFormatter.escapeAndEnclose(shared_request_flag==null?"null":shared_request_flag, delimiters));
     __sb.append(fieldDelim);
-    __sb.append(FieldFormatter.escapeAndEnclose(shared_match_flag==null?"null":"" + shared_match_flag, delimiters));
+    __sb.append(FieldFormatter.escapeAndEnclose(shared_match_flag==null?"null":shared_match_flag, delimiters));
     __sb.append(fieldDelim);
-    __sb.append(FieldFormatter.escapeAndEnclose(wav_request_flag==null?"null":"" + wav_request_flag, delimiters));
+    __sb.append(FieldFormatter.escapeAndEnclose(wav_request_flag==null?"null":wav_request_flag, delimiters));
     __sb.append(fieldDelim);
-    __sb.append(FieldFormatter.escapeAndEnclose(wav_match_flag==null?"null":"" + wav_match_flag, delimiters));
+    __sb.append(FieldFormatter.escapeAndEnclose(wav_match_flag==null?"null":wav_match_flag, delimiters));
     __sb.append(fieldDelim);
     __sb.append(FieldFormatter.escapeAndEnclose(request_date==null?"null":"" + request_date, delimiters));
     __sb.append(fieldDelim);
@@ -1256,13 +1256,13 @@ this.readFields0(__dataIn);  }
     __sb.append(fieldDelim);
     __sb.append(FieldFormatter.escapeAndEnclose(driver_pay==null?"null":"" + driver_pay, delimiters));
     __sb.append(fieldDelim);
-    __sb.append(FieldFormatter.escapeAndEnclose(shared_request_flag==null?"null":"" + shared_request_flag, delimiters));
+    __sb.append(FieldFormatter.escapeAndEnclose(shared_request_flag==null?"null":shared_request_flag, delimiters));
     __sb.append(fieldDelim);
-    __sb.append(FieldFormatter.escapeAndEnclose(shared_match_flag==null?"null":"" + shared_match_flag, delimiters));
+    __sb.append(FieldFormatter.escapeAndEnclose(shared_match_flag==null?"null":shared_match_flag, delimiters));
     __sb.append(fieldDelim);
-    __sb.append(FieldFormatter.escapeAndEnclose(wav_request_flag==null?"null":"" + wav_request_flag, delimiters));
+    __sb.append(FieldFormatter.escapeAndEnclose(wav_request_flag==null?"null":wav_request_flag, delimiters));
     __sb.append(fieldDelim);
-    __sb.append(FieldFormatter.escapeAndEnclose(wav_match_flag==null?"null":"" + wav_match_flag, delimiters));
+    __sb.append(FieldFormatter.escapeAndEnclose(wav_match_flag==null?"null":wav_match_flag, delimiters));
     __sb.append(fieldDelim);
     __sb.append(FieldFormatter.escapeAndEnclose(request_date==null?"null":"" + request_date, delimiters));
     __sb.append(fieldDelim);
@@ -1507,8 +1507,8 @@ this.readFields0(__dataIn);  }
     } else {
         __cur_str = "null";
     }
-    if (__cur_str.equals("null") || __cur_str.length() == 0) { this.shared_request_flag = null; } else {
-      this.shared_request_flag = Integer.valueOf(__cur_str);
+    if (__cur_str.equals("null")) { this.shared_request_flag = null; } else {
+      this.shared_request_flag = __cur_str;
     }
 
     if (__it.hasNext()) {
@@ -1516,8 +1516,8 @@ this.readFields0(__dataIn);  }
     } else {
         __cur_str = "null";
     }
-    if (__cur_str.equals("null") || __cur_str.length() == 0) { this.shared_match_flag = null; } else {
-      this.shared_match_flag = Integer.valueOf(__cur_str);
+    if (__cur_str.equals("null")) { this.shared_match_flag = null; } else {
+      this.shared_match_flag = __cur_str;
     }
 
     if (__it.hasNext()) {
@@ -1525,8 +1525,8 @@ this.readFields0(__dataIn);  }
     } else {
         __cur_str = "null";
     }
-    if (__cur_str.equals("null") || __cur_str.length() == 0) { this.wav_request_flag = null; } else {
-      this.wav_request_flag = Integer.valueOf(__cur_str);
+    if (__cur_str.equals("null")) { this.wav_request_flag = null; } else {
+      this.wav_request_flag = __cur_str;
     }
 
     if (__it.hasNext()) {
@@ -1534,8 +1534,8 @@ this.readFields0(__dataIn);  }
     } else {
         __cur_str = "null";
     }
-    if (__cur_str.equals("null") || __cur_str.length() == 0) { this.wav_match_flag = null; } else {
-      this.wav_match_flag = Integer.valueOf(__cur_str);
+    if (__cur_str.equals("null")) { this.wav_match_flag = null; } else {
+      this.wav_match_flag = __cur_str;
     }
 
     if (__it.hasNext()) {
@@ -1746,8 +1746,8 @@ this.readFields0(__dataIn);  }
     } else {
         __cur_str = "null";
     }
-    if (__cur_str.equals("null") || __cur_str.length() == 0) { this.shared_request_flag = null; } else {
-      this.shared_request_flag = Integer.valueOf(__cur_str);
+    if (__cur_str.equals("null")) { this.shared_request_flag = null; } else {
+      this.shared_request_flag = __cur_str;
     }
 
     if (__it.hasNext()) {
@@ -1755,8 +1755,8 @@ this.readFields0(__dataIn);  }
     } else {
         __cur_str = "null";
     }
-    if (__cur_str.equals("null") || __cur_str.length() == 0) { this.shared_match_flag = null; } else {
-      this.shared_match_flag = Integer.valueOf(__cur_str);
+    if (__cur_str.equals("null")) { this.shared_match_flag = null; } else {
+      this.shared_match_flag = __cur_str;
     }
 
     if (__it.hasNext()) {
@@ -1764,8 +1764,8 @@ this.readFields0(__dataIn);  }
     } else {
         __cur_str = "null";
     }
-    if (__cur_str.equals("null") || __cur_str.length() == 0) { this.wav_request_flag = null; } else {
-      this.wav_request_flag = Integer.valueOf(__cur_str);
+    if (__cur_str.equals("null")) { this.wav_request_flag = null; } else {
+      this.wav_request_flag = __cur_str;
     }
 
     if (__it.hasNext()) {
@@ -1773,8 +1773,8 @@ this.readFields0(__dataIn);  }
     } else {
         __cur_str = "null";
     }
-    if (__cur_str.equals("null") || __cur_str.length() == 0) { this.wav_match_flag = null; } else {
-      this.wav_match_flag = Integer.valueOf(__cur_str);
+    if (__cur_str.equals("null")) { this.wav_match_flag = null; } else {
+      this.wav_match_flag = __cur_str;
     }
 
     if (__it.hasNext()) {

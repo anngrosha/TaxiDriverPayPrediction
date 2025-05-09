@@ -14,7 +14,12 @@ SET hive.resultset.use.unique.column.names = false;
 
 INSERT INTO q2_results
 SELECT 
-    hvfhs_license_num AS company, 
+    CASE hvfhs_license_num
+        WHEN 'HV0003' THEN 'Uber'
+        WHEN 'HV0004' THEN 'Via'
+        WHEN 'HV0005' THEN 'Lyft'
+        ELSE 'Other'
+    END AS company,
     ROUND(COUNT(*) * 100.0 / subq.total_count, 2) AS percentage,
     COUNT(*) AS trips_count 
 FROM trips_part 

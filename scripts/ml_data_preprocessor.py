@@ -7,11 +7,9 @@ from pyspark.ml import Transformer
 from pyspark.ml.param.shared import HasInputCol, HasOutputCols
 from pyspark.ml.util import DefaultParamsReadable, DefaultParamsWritable
 from pyspark.ml.linalg import VectorUDT
-from pyspark.sql import DataFrame
 from pyspark import keyword_only
 import math
 import os
-import argparse
 
 
 class CyclicalEncoder(
@@ -38,7 +36,7 @@ class CyclicalEncoder(
         if self.isSet("outputCols"):
             return self.getOrDefault("outputCols")
         input_col = self.getInputCol()
-        #return [f"{input_col}_sine", f"{input_col}_cosine"]
+
         return ["{0}_sine".format(input_col), "{0}_cosine".format(input_col)]
 
     def _transform(self, df):
@@ -160,11 +158,22 @@ class DataPreprocessor:
                 "month", F.month("date")
             )
 
-    def process(self, trips_part_df, taxi_zone_df, weather_df, show_progress=False):
+    def process(self, trips_part_df, taxi_zone_df,
+                weather_df, show_progress=False):
 
-        # Drop columns with missing values
-        trips_part = trips_part_df.drop("originating_base_num", "on_scene_datetime",
-                                     "airport_fee")
+        # Drop columns with missing values and convert 'N'/'Y' to 0/1
+        trips_part = trips_part_df.drop("originating_base_num",
+                                        "on_scene_datetime",
+                                        "airport_fee")
+        flag_columns = ['wav_match_flag', 'wav_request_flag',
+                        'shared_match_flag', 'shared_request_flag']
+        for column in flag_columns:
+            trips_part = trips_part.withColumn(
+                column,
+                F.when(F.col(column) == 'Y', 1)
+                .when(F.col(column) == 'N', 0)
+                .otherwise(None))
+
         weather = weather_df.drop("precipitation_type", "wind_gust", "severe_risk")
 
         if show_progress:
@@ -278,15 +287,6 @@ def run(command):
 
 
 if __name__ == "__main__":
-    # Set up argument parser
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--train_hdfs", required=True, help="HDFS path for training data (e.g., project/data/train)")
-    parser.add_argument("--test_hdfs", required=True, help="HDFS path for test data (e.g., project/data/test)")
-    parser.add_argument("--local_output_dir", default="data", help="Local directory to save final JSON files")
-    args = parser.parse_args()
-
-    # Create a local directory if it does not exist
-    #os.makedirs(args.local_output_dir, exist_ok=True)
 
     # Add here your team number teamx
     team = 31
@@ -294,15 +294,16 @@ if __name__ == "__main__":
     # location of your Hive database in HDFS
     warehouse = "project/hive/warehouse"
 
-    spark = SparkSession.builder\
-            .appName("{} - spark ML".format(team))\
-            .master("yarn")\
-            .config("hive.metastore.uris",
-                    "thrift://hadoop-02.uni.innopolis.ru:9883")\
-            .config("spark.sql.warehouse.dir", warehouse)\
-            .config("spark.sql.avro.compression.codec", "snappy")\
-            .enableHiveSupport()\
-            .getOrCreate()
+    spark = SparkSession\
+        .builder\
+        .appName("{} - spark ML".format(team))\
+        .master("yarn")\
+        .config("hive.metastore.uris",
+                "thrift://hadoop-02.uni.innopolis.ru:9883")\
+        .config("spark.sql.warehouse.dir", warehouse)\
+        .config("spark.sql.avro.compression.codec", "snappy")\
+        .enableHiveSupport()\
+        .getOrCreate()
 
     # Ensure that we are using the correct db
     spark.sql("USE team31_projectdb").show()
@@ -326,8 +327,10 @@ if __name__ == "__main__":
     # Split the dataframe into train and test
     train_df, test_df = features_df.randomSplit([0.7, 0.3], seed=42)
 
-    train_df = train_df.withColumn("features", train_df["features"].cast(VectorUDT()))
-    test_df = test_df.withColumn("features", test_df["features"].cast(VectorUDT()))
+    train_df = train_df\
+        .withColumn("features", train_df["features"].cast(VectorUDT()))
+    test_df = test_df\
+        .withColumn("features", test_df["features"].cast(VectorUDT()))
 
     # Save training data
     train_df.select("features", "driver_pay")\
@@ -336,10 +339,7 @@ if __name__ == "__main__":
         .mode("overwrite")\
         .parquet("/user/team31/project/data/train")
 
-    # Combine HDFS parts into single local JSON file
-    local_train_path = os.path.join(args.local_output_dir, "train.json")
-
-    run("hdfs dfs -cat /user/team31/project/data/train/*.parquet > /data/train.parquet")
+    run("hdfs dfs -cat /user/team31/project/data/train/*.parquet > data/train.parquet")
 
     # Save test data
     test_df.select("features", "driver_pay")\
@@ -348,28 +348,8 @@ if __name__ == "__main__":
         .mode("overwrite")\
         .parquet("/user/team31/project/data/test")
 
-    # Combine HDFS parts into single local JSON file
-    local_test_path = os.path.join(args.local_output_dir, "test.json")
-
-    run("hdfs dfs -cat /user/team31/project/data/test/*.parquet > /data/test.parquet")
-    
-    # Get Hadoop filesystem object
-    hadoop_fs = spark._jvm.org.apache.hadoop.fs.FileSystem.get(spark._jsc.hadoopConfiguration())
-    warehouse_path = spark._jvm.org.apache.hadoop.fs.Path(warehouse)
-
-    statuses = hadoop_fs.listStatus(warehouse_path)
-    for idx, file_status in enumerate(statuses):
-        print(idx, "===", file_status.getPath().toString())
-
-    run("hdfs dfs -ls /project/data/train")
-    run("hdfs dfs -ls /project/data/test")
+    run("hdfs dfs -cat /user/team31/project/data/test/*.parquet > data/test.parquet")
 
     print("\nData successfully saved:")
-    print("- HDFS training data: {}".format(args.train_hdfs))
-    print("- HDFS test data: {}".format(args.test_hdfs))
-    print("- Local training data: {}".format(local_train_path))
-    print("- Local test data: {}".format(local_test_path))
-
-    # Print full paths
-    print("Absolute local train path:", os.path.abspath(local_train_path))
-    print("Absolute local test path:", os.path.abspath(local_test_path))
+    print("- Distributed training data saved: /user/team31/project/data/train")
+    print("- Distributed test data saved: /user/team31/project/data/test")

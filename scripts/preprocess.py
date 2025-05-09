@@ -1,17 +1,23 @@
-import pyarrow.parquet as pq
 import os
+import pyarrow.parquet as pq
 
-num_of_rows = 0
-for month in ['01', '02', '03']:
+ROWS_NUM: int = 0
+
+for month in ['01', ]:
     parquet_file = os.path.join("data", f"trips_{month}.parquet")
     if os.path.exists(parquet_file):
         print(f"Processing {parquet_file}...")
 
         save_file_path = os.path.join("data", f"trips_{month}.csv")
-        first_batch = True
 
-        for batch in pq.read_table(parquet_file).to_batches(max_chunksize=2000):
-            if num_of_rows >= 2_450_000:
+        table = pq.read_table(parquet_file)
+        print("table is read")
+        batches = table.to_batches(max_chunksize=2000)
+        print("batched")
+
+        FIRST_BATCH: bool = True
+        for batch in batches:
+            if ROWS_NUM >= 2_450_000:
                 break
             df = batch.to_pandas()
 
@@ -23,9 +29,9 @@ for month in ['01', '02', '03']:
 
             df.to_csv(
                 save_file_path,
-                mode='w' if first_batch else 'a',
-                header=first_batch,
+                mode='w' if FIRST_BATCH else 'a',
+                header=FIRST_BATCH,
                 index=False
             )
-            first_batch = False
-            num_of_rows += len(df)
+            FIRST_BATCH = False
+            ROWS_NUM += len(df)

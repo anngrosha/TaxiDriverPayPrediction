@@ -124,28 +124,28 @@
     "sqlType" : "8"
   }, {
     "name" : "shared_request_flag",
-    "type" : [ "null", "int" ],
+    "type" : [ "null", "string" ],
     "default" : null,
     "columnName" : "shared_request_flag",
-    "sqlType" : "4"
+    "sqlType" : "1"
   }, {
     "name" : "shared_match_flag",
-    "type" : [ "null", "int" ],
+    "type" : [ "null", "string" ],
     "default" : null,
     "columnName" : "shared_match_flag",
-    "sqlType" : "4"
+    "sqlType" : "1"
   }, {
     "name" : "wav_request_flag",
-    "type" : [ "null", "int" ],
+    "type" : [ "null", "string" ],
     "default" : null,
     "columnName" : "wav_request_flag",
-    "sqlType" : "4"
+    "sqlType" : "1"
   }, {
     "name" : "wav_match_flag",
-    "type" : [ "null", "int" ],
+    "type" : [ "null", "string" ],
     "default" : null,
     "columnName" : "wav_match_flag",
-    "sqlType" : "4"
+    "sqlType" : "1"
   }, {
     "name" : "request_date",
     "type" : [ "null", "long" ],

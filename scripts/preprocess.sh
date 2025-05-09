@@ -3,7 +3,7 @@ echo "Preprocessing has started"
 
 echo "Data collection has started"
 chmod +x ./scripts/data_collection.sh
-./scripts/data_collection.sh
+bash scripts/data_collection.sh
 
 echo "Venv setup"
 python3 -m venv .venv
