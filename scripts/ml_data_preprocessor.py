@@ -1,4 +1,6 @@
 # Import necessary dependencies
+import os
+import math
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 from pyspark.ml.feature import StringIndexer, OneHotEncoder, VectorAssembler
@@ -8,8 +10,6 @@ from pyspark.ml.param.shared import HasInputCol, HasOutputCols
 from pyspark.ml.util import DefaultParamsReadable, DefaultParamsWritable
 from pyspark.ml.linalg import VectorUDT
 from pyspark import keyword_only
-import math
-import os
 
 
 class CyclicalEncoder(
@@ -228,11 +228,13 @@ class DataPreprocessor:
         # Add encoded pick up and drop off locations
         combined_df = combined_df.join(
             pu_taxi_zone_encoded,
-            combined_df["pu_location_id"] == pu_taxi_zone_encoded["location_id_pu"],
+            (combined_df["pu_location_id"] == 
+             pu_taxi_zone_encoded["location_id_pu"]),
             "inner",
         ).join(
             do_taxi_zone_encoded,
-            combined_df["do_location_id"] == do_taxi_zone_encoded["location_id_do"],
+            (combined_df["do_location_id"] == 
+             do_taxi_zone_encoded["location_id_do"]),
             "inner",
         )
 
@@ -249,7 +251,8 @@ class DataPreprocessor:
         combined_df = cyclical_encoder.transform(combined_df)
 
         if show_progress:
-            print("Encoded days and months using sine and cosine transformations.")
+            print("Encoded days and months using " \
+                  "sine and cosine transformations.")
 
         # Fit our license num encoder
         license_num_encoder = self.pipelines.get(
@@ -339,7 +342,8 @@ if __name__ == "__main__":
         .mode("overwrite")\
         .parquet("/user/team31/project/data/train")
 
-    run("hdfs dfs -cat /user/team31/project/data/train/*.parquet > data/train.parquet")
+    run("hdfs dfs -cat /user/team31/project/data/train/*.parquet " \
+        "> data/train.parquet")
 
     # Save test data
     test_df.select("features", "driver_pay")\
@@ -348,7 +352,8 @@ if __name__ == "__main__":
         .mode("overwrite")\
         .parquet("/user/team31/project/data/test")
 
-    run("hdfs dfs -cat /user/team31/project/data/test/*.parquet > data/test.parquet")
+    run("hdfs dfs -cat /user/team31/project/data/test/*.parquet " \
+        "> data/test.parquet")
 
     print("\nData successfully saved:")
     print("- Distributed training data saved: /user/team31/project/data/train")
