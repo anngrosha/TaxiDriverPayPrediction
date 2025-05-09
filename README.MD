@@ -35,12 +35,13 @@ The project follows a four-stage architecture:
    git clone https://github.com/anngrosha/TaxiDriverPayPrediction
    cd TaxiDriverPayPrediction
    ```
+2. Make sure you have files .psql.pass и .hive.pass containing passwords in folder `secrets`.
 3. Run this code before the main pipeline to make the scripts executable
    ```bash
    chmod +x main.sh
    chmod +x scripts/*.sh
    ```
-2. Run the pipeline:
+4. Run the pipeline:
    ```bash
    ./main.sh
    ```
